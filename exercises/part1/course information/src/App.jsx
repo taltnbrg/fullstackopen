@@ -40,7 +40,6 @@ const App = () => {
       <Content name={part1} amount={exercises1} />
       <Content name={part2} amount={exercises2} />
       <Content name={part3} amount={exercises3} />
-      <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
       <Sum sum={[exercises1,exercises2,exercises3]} />
     </div>
   )
