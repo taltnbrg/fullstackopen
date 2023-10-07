@@ -28,16 +28,16 @@ sequenceDiagram
     activate server
     server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
     deactivate server
+    Note right of browser: draws notes
 
     user->>browser: input data into input-fields
     user->>browser: press "save" button
 
-    activate server
-    Note right of browser: was listening to the readystate of xttp object, fires now
-    browser->>server: GET /exampleapp/data.json
+    Note right of browser: was listening form submit Event - fires now
     Note right of browser: adds new note to notes array and redraws notes
+    activate server
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa application/json {content: {NEW_NOTE}, date: {CURRENT_DATE}}
     server-->>browser: success-response Status 201
-
     deactivate server
+
 ```
