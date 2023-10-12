@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import Numbers from './components/Numbers'
+import SearchField from './components/SearchField'
+import PersonInputForm from './components/PersonInputForm'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -46,18 +48,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      search: <input type="text" onChange={handleSearchTerm} />
-      <form onSubmit={handleFormSubmit}>
-        <div>
-          name: <input type="text" onChange={handleNewName} />
-        </div>
-        <div>
-          number: <input type="text" onChange={handlenewNumber} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <SearchField text="search" handleChange={handleSearchTerm} />
+      <PersonInputForm handleFormSubmit={handleFormSubmit} handleNewName={handleNewName} handlenewNumber={handlenewNumber} />
       {persons.length > 0 ? <Numbers persons={showPersons} /> : <p>no numbers submitted yet.</p>}
     </div>
   )
