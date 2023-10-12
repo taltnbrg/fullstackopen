@@ -15,11 +15,10 @@ const Content = (props) => {
 }
 
 const Total = (props) => {
-  let count = 0
-  props.course.parts.forEach((a)=>{ count+= a.exercises})
+  const exercisesCount = props.course.parts.reduce((accumulator, currentValue) => accumulator + currentValue.exercises, 0);
   return (
     <p>
-      <strong>total of {count} exercises</strong>
+      <strong>total of {exercisesCount} exercises</strong>
     </p>
   )
 }
