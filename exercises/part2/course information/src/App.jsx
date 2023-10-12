@@ -19,7 +19,7 @@ const Total = (props) => {
   props.course.parts.forEach((a)=>{ count+= a.exercises})
   return (
     <p>
-      Number of exercises {count}
+      <strong>total of {count} exercises</strong>
     </p>
   )
 }
@@ -62,16 +62,16 @@ const App = () => {
         exercises: 14,
         id: 3
       },
-      {
-        name: 'new part',
-        exercises: 11,
-        id: 4
-      },
-      {
-        name: 'another part',
-        exercises: 10,
-        id: 5
-      }
+      // {
+      //   name: 'new part',
+      //   exercises: 11,
+      //   id: 4
+      // },
+      // {
+      //   name: 'another part',
+      //   exercises: 10,
+      //   id: 5
+      // }
     ]
   }
 
