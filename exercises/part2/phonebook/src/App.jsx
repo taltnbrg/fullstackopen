@@ -58,6 +58,14 @@ const App = () => {
 
   const handleDelete = (event) => {
     const deleteId = parseInt(event.target.getAttribute("data-id"))
+    const person = persons.filter(person => person.id === deleteId)
+    if( person.length > 1 ) {
+      alert( `couldn't delete due to un-unique id`)
+      return
+    }
+    if( !confirm(`do you want to delete ${person[0].name}?`)) {
+      return
+    }
     personsService
       .deletePerson(deleteId)
       .then(response => {
