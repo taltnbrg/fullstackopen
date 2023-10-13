@@ -52,6 +52,21 @@ const App = () => {
       return
     }
     addPerson()
+    setNewName('')
+    setNewNumber('')
+  }
+
+  const handleDelete = (event) => {
+    const deleteId = parseInt(event.target.getAttribute("data-id"))
+    personsService
+      .deletePerson(deleteId)
+      .then(response => {
+        setPersons(persons.filter(person => person.id !== deleteId))
+        alert('person deleted.')
+      })
+      .catch(error => {
+        alert('could not delete person.')
+      })
   }
 
   const showPersons = filterPersonsByName()
@@ -60,8 +75,8 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <SearchField text="search" handleChange={handleSearchTerm} />
-      <PersonInputForm handleFormSubmit={handleFormSubmit} handleNewName={handleNewName} handlenewNumber={handlenewNumber} />
-      {persons.length > 0 ? <Numbers persons={showPersons} /> : <p>no numbers submitted yet.</p>}
+      <PersonInputForm name={newName} number={newNumber} handleFormSubmit={handleFormSubmit} handleNewName={handleNewName} handlenewNumber={handlenewNumber} />
+      {persons.length > 0 ? <Numbers persons={showPersons} handleDelete={handleDelete} /> : <p>no numbers submitted yet.</p>}
     </div>
   )
 }
