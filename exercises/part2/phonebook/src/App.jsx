@@ -45,15 +45,34 @@ const App = () => {
       })
   }
 
-  const handleFormSubmit = (event) => {
-    event.preventDefault()
-    if(persons.map(person=>person.name).includes(newName)) {
-      alert( `${newName} was already added to the phonebook.` )
-      return
+  const updatePerson = (id) => {
+    const personObject = {name: newName,number: newNumber}
+    personsService
+      .update(id, personObject)
+      .then(personResponse => {
+        setPersons(persons.filter((person=>person.id!==id)).concat(personResponse))
+      })
+  }
+
+  const handleUpdateOrCreate = () => {
+    const duplicateNames = persons.filter(person => person.name === newName)
+
+    if( duplicateNames.length === 0 ) {
+      addPerson()
+    } else {
+      if( !confirm(`a number for ${newName} exists already. do you want to overwrite it?`) ) {
+        return
+      }
+      const updateId = duplicateNames[0].id
+      updatePerson(updateId)
     }
-    addPerson()
     setNewName('')
     setNewNumber('')
+  }
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault()
+    handleUpdateOrCreate()
   }
 
   const handleDelete = (event) => {
@@ -70,10 +89,10 @@ const App = () => {
       .deletePerson(deleteId)
       .then(response => {
         setPersons(persons.filter(person => person.id !== deleteId))
-        alert('person deleted.')
+        alert(`${person[0].name} deleted.`)
       })
       .catch(error => {
-        alert('could not delete person.')
+        alert(`could not delete ${person[0].name}.`)
       })
   }
 
