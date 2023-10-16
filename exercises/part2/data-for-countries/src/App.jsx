@@ -1,0 +1,34 @@
+import { useState, useEffect } from 'react'
+import countriesService from './components/services/countries'
+import SearchField from './components/SearchField'
+import Countries from './components/Countries'
+import './index.css'
+
+function App() {
+
+  const [countries, setCountries] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
+
+  useEffect(() => {
+    countriesService
+      .getAll()
+      .then(initialCountries => {
+        setCountries(initialCountries)
+      })
+  }, [])
+
+  const handleSearchTerm = event => {
+    setSearchTerm(event.target.value)
+  }
+
+  const showCountries = countries.filter( country => country.name.common.toLowerCase().includes(searchTerm.toLowerCase()))
+
+  return (
+    <div>
+      <SearchField text="search" handleChange={handleSearchTerm} />
+      {showCountries.length > 0 ? <Countries countries={showCountries} /> : <p>Nothing</p>}
+    </div>
+  )
+}
+
+export default App
