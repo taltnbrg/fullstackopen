@@ -3,12 +3,15 @@ import Numbers from './components/Numbers'
 import SearchField from './components/SearchField'
 import PersonInputForm from './components/PersonInputForm'
 import personsService from './services/persons'
+import Notification from './components/Notification'
+import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
+  const [notification, setNotification] = useState([])
 
   useEffect(() => {
     personsService.getAll()
@@ -42,6 +45,10 @@ const App = () => {
       .create(personObject)
       .then(personResponse => {
         setPersons(persons.concat(personResponse))
+        setNotification([{message:`added ${personResponse.name}'s number to the phonebook.`, type:'success'}])
+        setTimeout(() => {
+          setNotification([])
+        }, 5000)
       })
   }
 
@@ -51,6 +58,10 @@ const App = () => {
       .update(id, personObject)
       .then(personResponse => {
         setPersons(persons.filter((person=>person.id!==id)).concat(personResponse))
+        setNotification([{message:`updated ${personResponse.name}'s number.`, type:'success'}])
+        setTimeout(() => {
+          setNotification([])
+        }, 5000)
       })
   }
 
@@ -79,7 +90,10 @@ const App = () => {
     const deleteId = parseInt(event.target.getAttribute("data-id"))
     const person = persons.filter(person => person.id === deleteId)
     if( person.length > 1 ) {
-      alert( `couldn't delete due to un-unique id`)
+      setNotification([{message:`couldn't delete due to un-unique id`, type:'error'}])
+      setTimeout(() => {
+        setNotification([])
+      }, 5000)
       return
     }
     if( !confirm(`do you want to delete ${person[0].name}?`)) {
@@ -88,11 +102,17 @@ const App = () => {
     personsService
       .deletePerson(deleteId)
       .then(response => {
-        setPersons(persons.filter(person => person.id !== deleteId))
-        alert(`${person[0].name} deleted.`)
+      setPersons(persons.filter(person => person.id !== deleteId))
+      setNotification([{message:`${person[0].name} deleted.`, type:'success'}])
+      setTimeout(() => {
+        setNotification([])
+      }, 5000)
       })
       .catch(error => {
-        alert(`could not delete ${person[0].name}.`)
+      setNotification([{message:`could not delete ${person[0].name}.<br> Servererror: ${error}`, type:'error'}])
+      setTimeout(() => {
+        setNotification([])
+      }, 5000)
       })
   }
 
@@ -101,6 +121,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {notification.length > 0 ? <Notification message={notification[0].message} type={notification[0].type} /> : ''}
       <SearchField text="search" handleChange={handleSearchTerm} />
       <PersonInputForm name={newName} number={newNumber} handleFormSubmit={handleFormSubmit} handleNewName={handleNewName} handlenewNumber={handlenewNumber} />
       {persons.length > 0 ? <Numbers persons={showPersons} handleDelete={handleDelete} /> : <p>no numbers submitted yet.</p>}
