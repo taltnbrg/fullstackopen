@@ -5,7 +5,6 @@ import Countries from './components/Countries'
 import './index.css'
 
 function App() {
-
   const [countries, setCountries] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -26,7 +25,7 @@ function App() {
   return (
     <div>
       <SearchField text="search" handleChange={handleSearchTerm} />
-      {showCountries.length > 0 ? <Countries countries={showCountries} /> : <p>Nothing</p>}
+      <Countries countries={showCountries} />
     </div>
   )
 }
