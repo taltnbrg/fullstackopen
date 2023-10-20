@@ -1,10 +1,11 @@
 import { useState } from 'react'
+import WeatherReport from './WeatherReport'
 
 const Country = ({country}) => {
   const [showStatus, setShowStatus] = useState(false)
   const languages = Object.values(country.languages)
 
-  const switchShowStatus = event => {
+  const switchShowStatus = () => {
     setShowStatus(!showStatus)
   }
 
@@ -15,6 +16,8 @@ const Country = ({country}) => {
   }
 
   const capitalText = country.capital.length === 1 ? 'Capital' : 'Capitals'
+  const capitalLatitude = country.capitalInfo.latlng[0]
+  const capitalLongitude = country.capitalInfo.latlng[1]
 
   return (
     <div>
@@ -31,6 +34,7 @@ const Country = ({country}) => {
           alt={country.flags.alt}
           height={300}
       />
+      <WeatherReport capitalName={country.capital[0]} capitalLatitude={capitalLatitude} capitalLongitude={capitalLongitude} />
     </div>
   )
 }

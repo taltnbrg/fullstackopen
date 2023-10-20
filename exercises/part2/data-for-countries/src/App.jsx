@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import countriesService from './components/services/countries'
+import weatherService from './components/services/weather'
 import SearchField from './components/SearchField'
 import Countries from './components/Countries'
 import './index.css'
